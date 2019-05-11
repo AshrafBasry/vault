@@ -25,5 +25,6 @@ class VaultServiceProvider extends ServiceProvider
     {
         //
         $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }
