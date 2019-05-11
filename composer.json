@@ -1,0 +1,25 @@
+{
+    "name": "basry/vault",
+    "description": "Managing Vault Operation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ashraf Basry",
+            "email": "ashrafmn2008@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Basry\\Vault\\": "packages/basry/vault/src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Basry\\Vault\\VaultServiceProvider"
+            ]
+        }
+    }
+}
