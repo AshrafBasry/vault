@@ -12,10 +12,13 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Basry\\Vault\\": "packages/basry/vault/src"
+            "Basry\\Vault\\": "src/"
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
         "laravel": {
             "providers": [
                 "Basry\\Vault\\VaultServiceProvider"
