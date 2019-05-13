@@ -14,6 +14,7 @@ class VaultServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->singleton(Contracts\Vault::class, Vault::class);
     }
 
     /**

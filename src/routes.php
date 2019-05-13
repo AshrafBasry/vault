@@ -1,5 +1,3 @@
 <?php
 
-Route::get('/Vault', function () {
-	echo "My First Package.";
-});
+Route::get('/Vault', 'Basry\Vault\Http\Controllers\VaultController@index');

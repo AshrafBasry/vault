@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Basry\Vault;
 
 use Illuminate\Database\Eloquent\Model;
 
