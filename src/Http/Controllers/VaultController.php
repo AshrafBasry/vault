@@ -8,9 +8,14 @@ use Basry\Vault\Contracts\Vault;
 
 class VaultController extends Controller
 {
-    public function index(Vault $vault)
-    {
-    	$balance = $vault->getBalance();
-    	return $balance;
-    }
+	/**
+	 * [index description]
+	 * @param  Vault  $vault [description]
+	 * @return [type]        [description]
+	 */
+	public function index(Vault $vault)
+	{
+		$balance = $vault->getBalance();
+		return $balance;
+	}
 }

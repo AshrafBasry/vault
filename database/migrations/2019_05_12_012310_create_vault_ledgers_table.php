@@ -15,6 +15,7 @@ class CreateVaultLedgersTable extends Migration
     {
         Schema::create('vault_ledgers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->morph('vaultable');
             $table->enum('type',['deposit','withdraw']);
             $table->float('amount',10,2)->unsigned();
             $table->float('balance',10,2)->unsigned();

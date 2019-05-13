@@ -35,7 +35,7 @@ interface Vault
 	 * @param  date $newDate
 	 * @return bool
 	 */
-	public function update($id, $newAmount, $newDate);
+	public function update($id);
 
 	/**
 	 * Delete A Vault Operation

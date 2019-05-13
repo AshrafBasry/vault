@@ -12,6 +12,6 @@ trait Vaultable
 	 */
 	public function vault()
 	{
-		return $this->belongsTo(VaultLedger::class);
+		return $this->morphMany(VaultLedger::class, 'vaultable');
 	}
 }
