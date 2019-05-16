@@ -17,7 +17,7 @@ interface Vault
 	 * @param  string $note 
 	 * @return bool
 	 */
-	public function deposit($amount, $date, $note);
+	public function deposit(float $amount, $date, string $note);
 
 	/**
 	 * Make A Withdraw Operation .
@@ -26,7 +26,7 @@ interface Vault
 	 * @param  string $note
 	 * @return bool
 	 */
-	public function withdraw($amount, $date, $note);
+	public function withdraw(float $amount, $date, string $note);
 
 	/**
 	 * Update A Vault Operation

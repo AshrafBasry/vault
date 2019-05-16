@@ -8,14 +8,31 @@ use Basry\Vault\Contracts\Vault;
 
 class VaultController extends Controller
 {
+
+	public function __construct(Vault $vault)
+	{
+		$this->vault = $vault;
+	}
 	/**
 	 * [index description]
-	 * @param  Vault  $vault [description]
 	 * @return [type]        [description]
 	 */
-	public function index(Vault $vault)
+	public function index()
 	{
-		$balance = $vault->getBalance();
-		return $balance;
+		$balance = $this->vault->getBalance();
+		$ledgers = $this->vault->getLedgers();
+		return compact('balance', 'ledgers');
+	}
+
+	public function deposit($amount)
+	{
+		$this->vault->deposit($amount, '02/08/2019', 'Make Deposit');
+		return redirect('/Vault');
+	}
+
+	public function withdraw($amount)
+	{
+		$this->vault->withdraw($amount, '12/08/2019', 'Make withdraw');
+		return redirect('/Vault');
 	}
 }

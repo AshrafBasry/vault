@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class VaultLedger extends Model
 {
-    //
-		public function vaultable()
-		{
-			return $this->morphTo();
-		}
+	/**
+	 * [$fillable description]
+	 * @var [type]
+	 */
+	protected $fillable = [
+		'order', 'amount', 'balance', 'date', 'reason'
+	];
 }

@@ -15,13 +15,11 @@ class CreateVaultLedgersTable extends Migration
     {
         Schema::create('vault_ledgers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->morph('vaultable');
-            $table->enum('type',['deposit','withdraw']);
-            $table->float('amount',10,2)->unsigned();
-            $table->float('balance',10,2)->unsigned();
-            $table->date('date');
             $table->bigInteger('order');
-            $table->text('note');
+            $table->decimal('amount', 10, 2);
+            $table->decimal('balance', 10, 2)->unsigned();
+            $table->date('date');
+            $table->text('reason');
             $table->timestamps();
         });
     }

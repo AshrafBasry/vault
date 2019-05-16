@@ -15,6 +15,8 @@ class VaultServiceProvider extends ServiceProvider
     {
         //
         $this->app->singleton(Contracts\Vault::class, Vault::class);
+        //
+        $this->mergeConfigFrom(__DIR__.'/../config/vault.php', 'vault');
     }
 
     /**
@@ -27,5 +29,13 @@ class VaultServiceProvider extends ServiceProvider
         //
         $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        //
+        $this->publishes([
+            __DIR__.'/../config/vault.php' => config_path('vault.php'),
+        ], 'vault-config');
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ], 'vault-migrations');
     }
 }
