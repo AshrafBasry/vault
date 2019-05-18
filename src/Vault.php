@@ -69,7 +69,7 @@ class Vault implements VaultActions
 	        $this->updateNextRecords();
 	        return $this->createRecord();
         }
-        throw new InsufficientBalanceException();
+        throw new InsufficientBalanceException('Insufficient Balance');
     }
 
     /**

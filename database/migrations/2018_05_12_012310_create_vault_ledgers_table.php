@@ -17,7 +17,7 @@ class CreateVaultLedgersTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('order');
             $table->decimal('amount', 10, 2);
-            $table->decimal('balance', 10, 2)->unsigned();
+            $table->unsignedDecimal('balance', 10, 2);
             $table->date('date');
             $table->text('reason');
             $table->timestamps();
