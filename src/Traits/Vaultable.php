@@ -37,17 +37,17 @@ trait Vaultable
 
     public static function create(array $attributes = [])
     {
-    	$defaultAction = static::getDefaultAction();
-    	if($defaultAction === 'deposit') {
-    		return static::createWithDeposit($attributes);
-    	} else if($defaultAction === 'withdraw') {
-    		return static::createWithWithdraw($attributes);
-    	}
-    	return static::query()->create($attributes);
+        $defaultAction = static::getDefaultAction();
+        if ($defaultAction === 'deposit') {
+            return static::createWithDeposit($attributes);
+        } elseif ($defaultAction === 'withdraw') {
+            return static::createWithWithdraw($attributes);
+        }
+        return static::query()->create($attributes);
     }
 
     protected static function getDefaultAction()
     {
-    	return isset(static::$vaultDefaultAction) ? static::$vaultDefaultAction : null;
+        return isset(static::$vaultDefaultAction) ? static::$vaultDefaultAction : null;
     }
 }

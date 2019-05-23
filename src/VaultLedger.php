@@ -21,14 +21,6 @@ class VaultLedger extends Model
     protected $casts = [
         'amount' => 'decimal:2',
         'balance' => 'decimal:2',
-        'date' => 'date',
-    ];
-
-    /**
-     * [$dates description]
-     * @var array
-     */
-    protected $dates = [
-        'date',
+        'date' => 'date|Y-m-d',
     ];
 }
