@@ -10,6 +10,7 @@ trait Vaultable
 {
     /**
      * [vault description]
+     * 
      * @return [type] [description]
      */
     public function vault()
@@ -17,6 +18,12 @@ trait Vaultable
         return $this->belongsTo(VaultLedger::class);
     }
 
+    /**
+     * [createWithDeposit description]
+     * 
+     * @param  array  $attributes [description]
+     * @return [type]             [description]
+     */
     public static function createWithDeposit(array $attributes = [])
     {
         $record = Vault::deposit($attributes['amount'], $attributes['date'], $attributes['reason']);
@@ -24,6 +31,12 @@ trait Vaultable
         return static::query()->create($attributes);
     }
 
+    /**
+     * [createWithWithdraw description]
+     * 
+     * @param  array  $attributes [description]
+     * @return [type]             [description]
+     */
     public static function createWithWithdraw(array $attributes = [])
     {
         try {
@@ -35,6 +48,12 @@ trait Vaultable
         return static::query()->create($attributes);
     }
 
+    /**
+     * [create description]
+     * 
+     * @param  array  $attributes [description]
+     * @return [type]             [description]
+     */
     public static function create(array $attributes = [])
     {
         $defaultAction = static::getDefaultAction();
@@ -46,6 +65,11 @@ trait Vaultable
         return static::query()->create($attributes);
     }
 
+    /**
+     * [getDefaultAction description]
+     * 
+     * @return [type] [description]
+     */
     protected static function getDefaultAction()
     {
         return isset(static::$vaultDefaultAction) ? static::$vaultDefaultAction : null;

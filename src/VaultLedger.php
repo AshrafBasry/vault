@@ -8,19 +8,31 @@ class VaultLedger extends Model
 {
     /**
      * [$fillable description]
+     * 
      * @var [type]
      */
     protected $fillable = [
-        'order', 'amount', 'balance', 'date', 'reason',
+        'type', 'amount', 'date', 'reason',
     ];
 
     /**
      * [$casts description]
+     * 
      * @var array
      */
     protected $casts = [
-        'amount' => 'decimal:2',
-        'balance' => 'decimal:2',
         'date' => 'date|Y-m-d',
     ];
+
+    /**
+     * [balance description]
+     * 
+     * @return [type] [description]
+     */
+    public function balance()
+    {
+        $deposits  = static::where('type', '=', 'deposit')->sum('amount');
+        $withdraws = static::where('type', '=', 'withdraw')->sum('amount');
+        return (float)($deposits - $withdraws);
+    }
 }

@@ -8,19 +8,46 @@ use Carbon\Carbon;
 
 class Vault implements VaultActions
 {
+    const WITHDRAW = 'withdraw';
+    const DEPOSIT = 'deposit';
     /**
      * VaultLedger Model Instance
+     *
      * @var \VaultLedger
      */
     private $ledger;
 
-    private $order;
+    /**
+     * [$type description]
+     *
+     * @var [type]
+     */
+    private $type;
+
+    /**
+     * [$amount description]
+     *
+     * @var [type]
+     */
     private $amount;
-    private $balance;
+
+    /**
+     * [$date description]
+     *
+     * @var [type]
+     */
     private $date;
+
+    /**
+     * [$reason description]
+     *
+     * @var [type]
+     */
     private $reason;
+
     /**
      * [__construct description]
+     *
      * @param VaultLedger $ledger [description]
      */
     public function __construct(VaultLedger $ledger)
@@ -30,19 +57,26 @@ class Vault implements VaultActions
 
     /**
      * Get Vault Current Balance
+     *
      * @return float
      */
     public function getBalance()
     {
-        return number_format((float) $this->ledger->orderBy('order', 'desc')->pluck('balance')->first(), config('vault.decimal'), '.', '');
+        return number_format($this->ledger->balance(), config('vault.decimal'), '.', '');
     }
 
+    /**
+     * [getLedgers description]
+     *
+     * @return [type] [description]
+     */
     public function getLedgers()
     {
-        return $this->ledger->orderBy('order', 'desc')->get();
+        return $this->ledger->orderBy('date', 'desc')->get();
     }
     /**
-     * Make A Deposit Operation .
+     * Make A Deposit Operation
+     *
      * @param  float $amount
      * @param  date $date
      * @param  string $reason
@@ -50,13 +84,13 @@ class Vault implements VaultActions
      */
     public function deposit(float $amount, $date, string $reason)
     {
-        $this->prepare(abs($amount), $date, $reason);
-        $this->updateNextRecords();
+        $this->prepare(self::DEPOSIT, $amount, $date, $reason);
         return $this->createRecord();
     }
 
     /**
-     * Make A Withdraw Operation .
+     * Make A Withdraw Operation
+     *
      * @param  float|integer $amount
      * @param  date $date
      * @param  string $reason
@@ -64,27 +98,16 @@ class Vault implements VaultActions
      */
     public function withdraw(float $amount, $date, string $reason)
     {
-        $this->prepare(-abs($amount), $date, $reason);
+        $this->prepare(self::WITHDRAW, $amount, $date, $reason);
         if ($this->checkBalanceBeforeWithdraw()) {
-	        $this->updateNextRecords();
-	        return $this->createRecord();
+            return $this->createRecord();
         }
         throw new InsufficientBalanceException('Insufficient Balance');
     }
 
     /**
-     * Update A Vault Operation
-     * @param  integer $id
-     * @param  float $newAmount
-     * @param  date $newDate
-     * @return bool
-     */
-    public function update($id)
-    {
-    }
-
-    /**
      * Delete A Vault Operation
+     *
      * @param  integer $id
      * @return bool
      */
@@ -92,50 +115,46 @@ class Vault implements VaultActions
     {
     }
 
-    private function prepare($amount, $date, $reason)
+    /**
+     * [prepare description]
+     *
+     * @param  [type] $type   [description]
+     * @param  [type] $amount [description]
+     * @param  [type] $date   [description]
+     * @param  [type] $reason [description]
+     * @return void
+     */
+    private function prepare($type, $amount, $date, $reason)
     {
         $this->date = (new Carbon($date))->format('Y-m-d');
-        $this->amount = $amount;
+        $this->type = $type;
+        $this->amount = abs($amount);
         $this->reason = $reason;
-        $previousRecord = $this->getPreviousRecord();
-        $this->order = $previousRecord ? $previousRecord->order + 1 : 1;
-        $this->balance = $previousRecord ? $previousRecord->balance + $amount : $amount;
     }
 
     /**
-     * Get The Previous Table Record
-     * @return \VaultLedger Model Object
+     * [createRecord description]
+     *
+     * @return [type] [description]
      */
-    private function getPreviousRecord()
-    {
-        return $this->ledger->where('date', '<=', $this->date)->orderBy('order', 'desc')->first();
-    }
-
     private function createRecord()
     {
         $data = [
-            'order'   => $this->order,
+            'type'    => $this->type,
             'amount'  => $this->amount,
-            'balance' => $this->balance,
-            'date'	  => $this->date,
+            'date'    => $this->date,
             'reason'  => $this->reason,
         ];
         return $this->ledger->create($data);
     }
 
-    private function updateNextRecords()
-    {
-        $records = $this->ledger->where('order', '>=', $this->order);
-        $records->increment('order');
-        $records->increment('balance', $this->amount);
-    }
-
+    /**
+     * [checkBalanceBeforeWithdraw description]
+     *
+     * @return bool
+     */
     private function checkBalanceBeforeWithdraw()
     {
-    	return $this->order > 1 && $this->ledger
-			 		->where('order', '>=', $this->order - 1)
-    		 		->where('balance', '<', abs($this->amount))
-    		 		->count() === 0;
-
+        return $this->amount <= $this->ledger->balance();
     }
 }
